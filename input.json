@@ -1,0 +1,14 @@
+{
+    "state": {
+        "reported": {
+          "noiseLevel": 10,
+          "temperature": 67,
+          "lightIntensity": 3318,
+          "tvoc": 2,
+          "eCO2": 144
+        }
+    },
+    "version": 1,
+    "timestamp": 1606283754
+  }
+  

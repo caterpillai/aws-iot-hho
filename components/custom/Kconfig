@@ -1,0 +1,5 @@
+menu "Custom driver implementations"
+    config SOFTWARE_MIC_SUPPORT
+    bool "MIC-SPM1423"
+    default y
+endmenu

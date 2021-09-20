@@ -1,0 +1,8 @@
+menu "Custom drivers for M5Stack peripherals"
+    config SOFTWARE_M5S_RBMST30_SUPPORT
+        bool "M5S-RBMST30"
+        default y
+    config SOFTWARE_M5S_U008_SUPPORT
+        bool "M5S-U008"
+        default y
+endmenu

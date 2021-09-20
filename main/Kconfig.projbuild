@@ -1,0 +1,25 @@
+menu "AWS IoT EduKit Configuration"
+
+    config SOFTWARE_M5S_RBMST30_SUPPORT
+        bool "M5S-RBMST30"
+        default y
+    
+    config SOFTWARE_M5S_U008_SUPPORT
+        bool "M5S-U008"
+        default y
+
+    config WIFI_SSID
+        string "WiFi SSID"
+        default "AWSWorkshop"
+        help
+            SSID (network name) for the example to connect to.
+
+    config WIFI_PASSWORD
+        string "WiFi Password"
+        default "IoTP$AK1t"
+        help
+            WiFi password (WPA or WPA2) for the example to use.
+
+            Can be left blank if the network has no security set.
+
+endmenu

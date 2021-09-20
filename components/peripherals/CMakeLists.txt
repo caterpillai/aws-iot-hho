@@ -1,0 +1,15 @@
+set(COMPONENT_SRCDIRS .)
+set(COMPONENT_ADD_INCLUDEDIRS .)
+
+if(CONFIG_SOFTWARE_M5S_RBMST30_SUPPORT)
+    list(APPEND COMPONENT_SRCDIRS m5stack/rb_mst_30)
+    list(APPEND COMPONENT_ADD_INCLUDEDIRS m5stack/rb_mst_30)
+endif()
+
+if(CONFIG_SOFTWARE_M5S_U008_SUPPORT)
+    list(APPEND COMPONENT_SRCDIRS m5stack/u008)
+    list(APPEND COMPONENT_ADD_INCLUDEDIRS m5stack/u008)
+endif()
+
+set(COMPONENT_REQUIRES "mbedtls" "freertos" "core2forAWS")
+register_component()
