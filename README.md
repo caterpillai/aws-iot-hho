@@ -6,6 +6,8 @@ In short, office spaces for knowledge workers often control various factors to e
 
 In theory, this could be done completely on the device (assuming it is not triggering other devices in the home office like a fan/ the AC). However, everyone's environment and their ideal working conditions are different, so one set of blanket recommendations would not be useful to most users. For that reason, the generation of recommendations happens on AWS, where initial recommendations can be preprogrammed (and adjusted in real-time) and where the data can be aggregated and leveraged in an ML model to provide more personalized recommendations that stay within the healthy/productive guidelines identified by the research.
 
+![Basic Architecture Diagram](https://github.com/caterpillai/aws-iot-hho/blob/main/HHO_v1_AWS_Diagram.png)
+
 For a quick demo of the current capabilities of the device, check out [this video](https://www.youtube.com/watch?v=8kJCjdPjQkM).
 
 
@@ -53,9 +55,9 @@ Using the instructions from [this part of the Smart Thermostat](https://edukit.w
 2. Provision an AWS Iot Analytics channel (for this we used the name `aws_iot_hho_channel`), but do not associate it with your message key
 3. Update the `<<device_id>>` and `<<channel_name>>` in the script so that recommendations can be sent to the right place and data can be stored appropriately.
 4. Update the AWS Lambda function with the appropriate permissions
-    1. In IAM, we created two policies (one with `Action` =`iot:UpdateThingShadow` and another with `Action`=`iotanalytics:BatchPutMessage`) and the appropriate resource `arn`s.
-    1. These policies were attached to the lambda function - giving it the right permissions to write where it needed to.
-5. Test the script using the `hho_test_input.json` file. **If there are permission errors here, they need to be resolved before enabling this rule.**
+    1. In `IAM`, we created two policies (one with `Action` =`iot:UpdateThingShadow` and another with `Action`=`iotanalytics:BatchPutMessage`) and the appropriate resource `arn`s.
+    1. These policies were attached to the lambda function - giving it the right permissions to write where it needed to. Without attaching these policies, the lambda function will not work.
+5. Test the script using the `hho_test_input.json` file. **If there are permission errors here (i.e. errors like: `ForbiddenException`), they need to be resolved before creating and enabling the rule.**
 6. Create a rule in AWS IoT Core to trigger the lambda function on each update.
 
 #### - Train a SageMaker model using the data in S3
