@@ -45,13 +45,17 @@ In addition to prerequisites from the external tutorials linked above, there are
 Using the instructions from [this part of the Smart Thermostat](https://edukit.workshop.aws/en/smart-thermostat/data-transforms-and-routing.html) tutorial, create an IoT Core rule with the contents of the [test_aws_iot_rule.sql](https://github.com/caterpillai/aws-iot-hho/blob/main/test_aws_iot_rule.sql) (feel free to ignore the comments). Be sure to update the topic referenced in the last line of the query and republish to the appropriate device's `update` topic.
 
 
-#### - Set up an AWS Lambda instance to process recommendations and send data to S3
+#### - Set up an AWS Lambda instance to process recommendations and send data to AWS IoT Analytics
+
+> **_NOTE:_** After working with AWS IoT Analytics more, we believe it would be easier to add pipeline processing as opposed to triggering the lambda function on every update message. A new approach leveraging AWS IoT Analytics functionality is being tested currently.
 
 1. In AWS Lambda, create a function using `python 3.8` (or equivalent runtime), and paste the code from [aws_lambda_update_desired.py](https://github.com/caterpillai/aws-iot-hho/blob/main/aws_lambda_update_desired.py) from this repository.
-2. Provision an S3 bucket to which results can be written
-3. Update the `<<device_id>>` and `<<bucket_id>>` in the script so that recommendations can be sent to the right place and data can be stored appropriately.
-4. Update the AWS Lambda function with the appropriate permissions to publish to the appropriate MQTT topics 
-5. Test the script using the `hho_test_input.json` file. **If there are permission errors here, they need to be resolved before continuing with this rule.**
+2. Provision an AWS Iot Analytics channel (for this we used the name `aws_iot_hho_channel`), but do not associate it with your message key
+3. Update the `<<device_id>>` and `<<channel_name>>` in the script so that recommendations can be sent to the right place and data can be stored appropriately.
+4. Update the AWS Lambda function with the appropriate permissions
+    1. In IAM, we created two policies (one with `Action` =`iot:UpdateThingShadow` and another with `Action`=`iotanalytics:BatchPutMessage`) and the appropriate resource `arn`s.
+    1. These policies were attached to the lambda function - giving it the right permissions to write where it needed to.
+5. Test the script using the `hho_test_input.json` file. **If there are permission errors here, they need to be resolved before enabling this rule.**
 6. Create a rule in AWS IoT Core to trigger the lambda function on each update.
 
 #### - Train a SageMaker model using the data in S3

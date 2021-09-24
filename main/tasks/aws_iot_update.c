@@ -250,7 +250,7 @@ void update_task(void *param) {
                 if (rc == SUCCESS) {
                     ESP_LOGI(TAG, "Updating shadow device: %s", JsonDocumentBuffer);
                     rc = aws_iot_shadow_update(&iotCoreClient, clientId, 
-                        JsonDocumentBuffer, shadow_update_status_callback, NULL, 5, true);
+                        JsonDocumentBuffer, shadow_update_status_callback, NULL, 6, true);
                         _shadowUpdateInProgress = true;
                 } else {
                     ESP_LOGE(TAG, "Unable to finalize JSON document with error: %d", rc);
@@ -262,7 +262,8 @@ void update_task(void *param) {
         } else {
             ESP_LOGE(TAG, "Unable to initialize the JSON message with error: %d", rc);
         }
-        vTaskDelay(pdMS_TO_TICKS(5000)); 
+        // Perform update every 10 seconds
+        vTaskDelay(pdMS_TO_TICKS(10000)); 
     }
 
     if (rc != SUCCESS) {

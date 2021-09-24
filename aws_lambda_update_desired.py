@@ -65,11 +65,27 @@ def lambda_handler(event, context):
     event['state']['desired']['notificationCount'] = len(notifications)
     
     payload = json.dumps(event).encode('utf-8')
+
+    # Update IoT Analytics dataset
+    iotAnalyticsClient = boto3.client('iotanalytics')
+    response = iotAnalyticsClient.batch_put_message(
+        channelName='<<channel_name>>', # replace with actual channel name
+        messages=[
+            {
+              'messageId': event['clientId'],
+              'payload': payload
+            },
+            ]
+        )
     
-    # Accessible log via CloudWatch
+    if (len(response['batchPutMessageErrorEntries']) > 0):
+        # Log the entire error in CloudWatch
+        print(response)
+    
+    # Update shadow device
+    deviceShadowClient = boto3.client('iot-data')
     print("Updating Shadow device with %s", payload)
-    
-    # Publish to the update topic
-    deviceShadowClient.update_thing_shadow(
-        thingName='<<device_id>>', # scrubbed - replace with your own
+    response = deviceShadowClient.update_thing_shadow(
+        thingName='<<device_id>>', # replace with actual client id
         payload=payload)
+
